@@ -6,7 +6,7 @@ namespace SherStrapp.UI.ViewModels.Installer
 {
     public class InstallViewModel : NotifyPropertyChangedViewModel
     {
-        private readonly Bloxstrap.Installer installer = new();
+        private readonly SherStrapp.Installer installer = new();
 
         private readonly string _originalInstallLocation;
 
