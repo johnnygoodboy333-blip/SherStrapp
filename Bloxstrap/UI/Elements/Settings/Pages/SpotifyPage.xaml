@@ -1,0 +1,103 @@
+<ui:UiPage x:Class="SherStrapp.UI.Elements.Settings.Pages.SpotifyPage"
+      xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+      xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+      xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+      xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+      xmlns:ui="http://schemas.lepo.co/wpfui/2022/xaml"
+      xmlns:controls="clr-namespace:SherStrapp.UI.Elements.Controls"
+      mc:Ignorable="d"
+      d:DesignHeight="900" d:DesignWidth="800"
+      Title="SpotifyPage"
+      Scrollable="True">
+
+    <StackPanel Margin="0,0,14,14">
+
+        <TextBlock Text="Spotify Integration" FontSize="14"
+                   Foreground="{DynamicResource TextFillColorSecondaryBrush}" Margin="0,0,0,8"/>
+
+        <!-- ── Now Playing card ─────────────────────────────────────────── -->
+        <ui:Card Margin="0,0,0,12">
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="96"/>
+                    <ColumnDefinition Width="*"/>
+                </Grid.ColumnDefinitions>
+
+                <!-- Album art -->
+                <Border Grid.Column="0" Width="80" Height="80" CornerRadius="8"
+                        Background="{DynamicResource ControlFillColorDefaultBrush}"
+                        ClipToBounds="True">
+                    <Image Source="{Binding AlbumArt, Mode=OneWay}" Stretch="UniformToFill"/>
+                </Border>
+
+                <StackPanel Grid.Column="1" Margin="12,0,0,0" VerticalAlignment="Center">
+                    <TextBlock Text="{Binding NowPlayingText, Mode=OneWay}"
+                               FontSize="13" FontWeight="SemiBold"
+                               TextTrimming="CharacterEllipsis"/>
+
+                    <!-- Controls -->
+                    <StackPanel Orientation="Horizontal" Margin="0,10,0,0">
+                        <ui:Button Icon="Previous24"   Command="{Binding PrevCommand}"
+                                   IsEnabled="{Binding ControlsEnabled, Mode=OneWay}"
+                                   Margin="0,0,6,0" Padding="8,4" />
+                        <ui:Button Icon="{Binding PlayPauseIcon, Mode=OneWay}"
+                                   Command="{Binding PlayPauseCommand}"
+                                   IsEnabled="{Binding ControlsEnabled, Mode=OneWay}"
+                                   Margin="0,0,6,0" Padding="8,4"/>
+                        <ui:Button Icon="Next24"       Command="{Binding NextCommand}"
+                                   IsEnabled="{Binding ControlsEnabled, Mode=OneWay}"
+                                   Padding="8,4"/>
+                    </StackPanel>
+
+                    <!-- Free account note — only visible when IsPremium is false -->
+                    <TextBlock Text="{Binding FreeAccountNote, Mode=OneWay}"
+                               FontSize="11"
+                               Foreground="{DynamicResource SystemFillColorCautionBrush}"
+                               TextWrapping="Wrap"
+                               Margin="0,6,0,0"
+                               Visibility="{Binding IsPremium, Mode=OneWay,
+                                   Converter={StaticResource BooleanToVisibilityConverter},
+                                   ConverterParameter=Inverse}"/>
+                </StackPanel>
+            </Grid>
+        </ui:Card>
+
+        <!-- ── Link / Unlink ────────────────────────────────────────────── -->
+        <TextBlock Text="Account" FontSize="20" FontWeight="Medium" Margin="0,8,0,4"/>
+
+        <ui:Card Margin="0,0,0,8">
+            <StackPanel>
+                <!-- Linked state -->
+                <StackPanel Visibility="{Binding IsLinked, Converter={StaticResource BooleanToVisibilityConverter}}">
+                    <TextBlock Text="✓ Spotify linked" FontSize="14" FontWeight="SemiBold"
+                               Foreground="#1DB954" Margin="0,0,0,8"/>
+                    <ui:Button Icon="LinkDismiss24" Content="Unlink Spotify"
+                               Appearance="Danger" Command="{Binding UnlinkCommand}"/>
+                </StackPanel>
+
+                <!-- Unlinked state -->
+                <StackPanel Visibility="{Binding IsUnlinked, Converter={StaticResource BooleanToVisibilityConverter}}">
+                    <TextBlock Text="Client ID" Foreground="{DynamicResource TextFillColorSecondaryBrush}"
+                               Margin="0,0,0,4"/>
+                    <ui:TextBox Text="{Binding ClientId, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                PlaceholderText="Paste your Spotify app Client ID" Margin="0,0,0,8"/>
+                    <ui:Button Icon="LinkAdd24" Content="Link Spotify account"
+                               Command="{Binding LinkCommand}"
+                               IsEnabled="{Binding CanLink, Mode=OneWay}"/>
+                </StackPanel>
+            </StackPanel>
+        </ui:Card>
+
+        <!-- ── Setup guide ──────────────────────────────────────────────── -->
+        <ui:CardExpander Margin="0,0,0,8" IsExpanded="{Binding IsUnlinked, Mode=OneWay}">
+            <ui:CardExpander.Header>
+                <TextBlock FontSize="14" Text="How to get your Client ID"/>
+            </ui:CardExpander.Header>
+            <TextBlock Text="{Binding SetupInstructions, Mode=OneTime}"
+                       FontFamily="Consolas" FontSize="12"
+                       Foreground="{DynamicResource TextFillColorSecondaryBrush}"
+                       TextWrapping="Wrap"/>
+        </ui:CardExpander>
+
+    </StackPanel>
+</ui:UiPage>
