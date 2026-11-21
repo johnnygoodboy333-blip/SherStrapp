@@ -71,7 +71,7 @@
                 <StackPanel Visibility="{Binding IsLinked, Converter={StaticResource BooleanToVisibilityConverter}}">
                     <TextBlock Text="✓ Spotify linked" FontSize="14" FontWeight="SemiBold"
                                Foreground="#1DB954" Margin="0,0,0,8"/>
-                    <ui:Button Icon="LinkDismiss24" Content="Unlink Spotify"
+                    <ui:Button Icon="Delete28" Content="Unlink Spotify"
                                Appearance="Danger" Command="{Binding UnlinkCommand}"/>
                 </StackPanel>
 
@@ -81,7 +81,7 @@
                                Margin="0,0,0,4"/>
                     <ui:TextBox Text="{Binding ClientId, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                                 PlaceholderText="Paste your Spotify app Client ID" Margin="0,0,0,8"/>
-                    <ui:Button Icon="LinkAdd24" Content="Link Spotify account"
+                    <ui:Button Icon="Add28" Content="Link Spotify account"
                                Command="{Binding LinkCommand}"
                                IsEnabled="{Binding CanLink, Mode=OneWay}"/>
                 </StackPanel>
