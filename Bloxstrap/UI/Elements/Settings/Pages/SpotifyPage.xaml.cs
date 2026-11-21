@@ -1,18 +1,13 @@
-// lang: C#, file: UI/Elements/Settings/Pages/SpotifyPage.xaml.cs
 using SherStrapp.UI.ViewModels.Settings;
 
 namespace SherStrapp.UI.Elements.Settings.Pages
 {
-    public partial class SpotifyPage
+    public partial class SpotifyPage : Wpf.Ui.Controls.UiPage
     {
-        private readonly SpotifyViewModel _vm;
-
         public SpotifyPage()
         {
-            _vm = new SpotifyViewModel();
-            DataContext = _vm;
+            DataContext = new SpotifyViewModel();
             InitializeComponent();
-            Unloaded += (_, _) => _vm.Dispose();
         }
     }
 }
