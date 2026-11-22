@@ -5,6 +5,7 @@ using Windows.Win32.Foundation;
 
 using SherStrapp.UI.Elements.Dialogs;
 using SherStrapp.Enums;
+using SherStrapp.Services;
 
 namespace SherStrapp
 {
@@ -284,9 +285,15 @@ namespace SherStrapp
 
             var watcher = new Watcher();
 
-            Task.Run(watcher.Run).ContinueWith(t => 
+            // start the in-game overlay hotkey listener (Ctrl+Alt+X)
+            OverlayService.Start();
+
+            Task.Run(watcher.Run).ContinueWith(t =>
             {
                 App.Logger.WriteLine(LOG_IDENT, "Watcher task has finished");
+
+                // shut down overlay when Roblox exits
+                Application.Current?.Dispatcher.Invoke(OverlayService.Stop);
 
                 watcher.Dispose();
 
